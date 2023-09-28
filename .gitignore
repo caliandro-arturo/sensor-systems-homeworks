@@ -32,6 +32,7 @@
 # Eclipse CDT project files
 .cproject
 .project
+.metadata
 .settings/
 
 # Vagrant directory
