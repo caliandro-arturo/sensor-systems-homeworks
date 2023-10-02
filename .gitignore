@@ -30,6 +30,8 @@
 *.png
 
 # Eclipse CDT project files
+.project
+!*/*/*/.project
 .metadata
 .settings/
 
