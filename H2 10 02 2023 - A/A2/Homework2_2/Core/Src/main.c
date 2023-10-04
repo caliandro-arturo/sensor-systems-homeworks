@@ -89,7 +89,7 @@ struct note score[] = {
 		{_DO4,12},
 };
 bool song_playing = false;
-int index = 0;
+int note_index = 0;
 int song_length = sizeof(score)/sizeof(score[0]);
 /* USER CODE END PV */
 
@@ -109,22 +109,22 @@ void playnote()
 {
 	HAL_TIM_PWM_Stop(&htim1,TIM_CHANNEL_2);
 	//check if the song is over or not
-	if (index >= song_length){
+	if (note_index >= song_length){
 		   HAL_TIM_Base_Stop_IT(&htim2);
 		   __HAL_TIM_CLEAR_IT(&htim2,TIM_IT_UPDATE);
 		   song_playing = false;
 		   return;
     }
 	// Configure the pwm/TIM1 channel2 for the tone that it is going to play
-	__HAL_TIM_SET_AUTORELOAD(&htim1,score[index].tone);
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2,score[index].tone/2);
+	__HAL_TIM_SET_AUTORELOAD(&htim1,score[note_index].tone);
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2,score[note_index].tone/2);
     __HAL_TIM_SET_COUNTER(&htim1,0);
     HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
     //Configure the TIM 2
     htim2.Instance = TIM2;
     htim2.Init.Prescaler = 8399;
     htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-    htim2.Init.Period = 10*TEMPO*score[index].duration-1;
+    htim2.Init.Period = 10*TEMPO*score[note_index].duration-1;
     htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
     htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
     if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -138,7 +138,7 @@ void playnote()
 void playing_init()
 {
 	song_playing = true;
-	index = 0;
+	note_index = 0;
 	playnote();
 }
 
@@ -151,8 +151,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	if(htim == &htim2){
-		index++;
+	if(htim == &htim2) {
+		note_index++;
 		playnote();
 	}
 }
