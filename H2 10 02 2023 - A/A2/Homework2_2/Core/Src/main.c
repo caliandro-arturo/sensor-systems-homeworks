@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -88,7 +88,7 @@ struct note score[] = {
 		{_MI4,4},
 		{_DO4,12},
 };
-int song_playing = 0;
+bool song_playing = false;
 int index = 0;
 int song_length = sizeof(score)/sizeof(score[0]);
 /* USER CODE END PV */
@@ -112,7 +112,7 @@ void playnote()
 	if (index >= song_length){
 		   HAL_TIM_Base_Stop_IT(&htim2);
 		   __HAL_TIM_CLEAR_IT(&htim2,TIM_IT_UPDATE);
-		   song_playing = 0;
+		   song_playing = false;
 		   return;
     }
 	// Configure the pwm/TIM1 channel2 for the tone that it is going to play
@@ -134,16 +134,17 @@ void playnote()
     HAL_TIM_Base_Start_IT(&htim2);
     __HAL_TIM_CLEAR_IT(&htim2,TIM_IT_UPDATE);
 }
+
 void playing_init()
 {
-	song_playing = 1;
+	song_playing = true;
 	index = 0;
 	playnote();
 }
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	if(GPIO_Pin == GPIO_PIN_8){
-		if(song_playing == 0)
+	if(GPIO_Pin == GPIO_PIN_8 && !song_playing){
 		playing_init();
 	}
 }
@@ -154,7 +155,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		index++;
 		playnote();
 	}
-
 }
 /* USER CODE END 0 */
 
