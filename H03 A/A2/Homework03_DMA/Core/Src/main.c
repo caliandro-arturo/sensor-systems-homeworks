@@ -62,7 +62,8 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
 	HAL_UART_Transmit_DMA(&huart2,(uint8_t *)string, strlen(string));
 }
 /* USER CODE END 0 */
@@ -99,12 +100,12 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  snprintf(string,sizeof(string),"Hui %d\r\n",2001);
-  HAL_UART_Transmit_DMA(&huart2,(uint8_t *)string, strlen(string));
+  snprintf(string, sizeof(string), "Hui %d\r\n", 2001);
+  HAL_UART_Transmit_DMA(&huart2, (uint8_t *)string, strlen(string));
   __HAL_TIM_CLEAR_IT(&htim2, TIM_IT_UPDATE);
   if(HAL_TIM_Base_Start_IT(&htim2) != HAL_OK){
-  	  Error_Handler();
-    }
+  	Error_Handler();
+  }
   /* USER CODE END 2 */
 
   /* Infinite loop */

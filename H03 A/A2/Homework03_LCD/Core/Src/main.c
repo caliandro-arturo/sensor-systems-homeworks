@@ -45,10 +45,9 @@ TIM_HandleTypeDef htim2;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-char name[][16] = {"Arturo", "Gabriele","Hui", "Luigi", "Mattia"}; //define the name of every partner in the group
+char name[][16] = {"Arturo", "Gabriele", "Hui", "Luigi", "Mattia"}; //define the name of every partner in the group
 int our_index = 0;
-char last_name[] = "";
-char * last_name_ptr = last_name;
+char *last_name_ptr = "";
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -62,24 +61,18 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void increment_index(void){
-	if (our_index <  4){
-		our_index++;
-	}
-	else{
-		our_index=0;
-	}
-}
-void printname(void){
+void print_name(void)
+{
 	lcd_println(last_name_ptr, 0);
 	lcd_println(name[our_index], 1);
 	last_name_ptr = name[our_index];
-	increment_index();
-
+	our_index = (our_index + 1) % 5;
 }
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
 	lcd_clear();
-	printname();
+	print_name();
 }
 /* USER CODE END 0 */
 
@@ -114,10 +107,10 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  lcd_initialize(); //Initializes the LCD controller.
-  lcd_backlight_ON();//Turns ON the LCD backlight
-  lcd_clear();//Clears the entire display.
-  printname();
+  lcd_initialize();
+  lcd_backlight_ON();
+  lcd_clear();
+  print_name();
   __HAL_TIM_CLEAR_IT(&htim2, TIM_IT_UPDATE);
   if(HAL_TIM_Base_Start_IT(&htim2) != HAL_OK){
   	  Error_Handler();
