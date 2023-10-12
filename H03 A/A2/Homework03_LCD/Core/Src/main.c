@@ -45,7 +45,7 @@ TIM_HandleTypeDef htim2;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-char name[][16] = {"Hui", "Mattia", "Gabriele", "Arturo", "Luigi"}; //define the name of every partner in the group
+char name[][16] = {"Arturo", "Gabriele","Hui", "Luigi", "Mattia"}; //define the name of every partner in the group
 int our_index = 0;
 char last_name[] = "";
 char * last_name_ptr = last_name;
