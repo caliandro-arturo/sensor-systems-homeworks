@@ -66,8 +66,8 @@ static void MX_TIM2_Init(void);
 void HAL_ADC_ConvCpltCallback (ADC_HandleTypeDef *hadc){
 	int conversion = HAL_ADC_GetValue(&hadc1);
 	float voltage = conversion*3.3/4095.0;
-    char string[12];
-	snprintf(string,sizeof(string),"%2f V",voltage);
+    char string[18];
+	snprintf(string,sizeof(string),"Voltage: %.3f V",voltage);
 	lcd_clear();
 	lcd_println(string, 0);
 	lcd_drawBar((80*conversion)/4095);
