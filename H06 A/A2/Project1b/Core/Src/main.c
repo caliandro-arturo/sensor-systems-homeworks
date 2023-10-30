@@ -31,7 +31,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+/* Rename or remove in case of LM75/LM75A */
+#define LM75B
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -69,14 +70,18 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim){
 	int len=0;
 	int16_t temperature_final = 0;
 	float temperature_final_float = 0;
+
 	if (HAL_I2C_Master_Receive(&hi2c1,LM75_ADDRESS+1,datas_temperature,6,20) == HAL_OK){
+#ifdef LM75B
 		if( (datas_temperature[0] == datas_temperature[2]) && (datas_temperature[1] == datas_temperature[3]) ){
 			temperature_final = (datas_temperature[0] << 8) | (datas_temperature[1]);
 		}
 		else{
 			temperature_final = (datas_temperature[4] << 8) | (datas_temperature[5]);
 		}
-
+#else
+		temperature_final = (datas_temperature[0] << 8) | (datas_temperature[1]);
+#endif
 		temperature_final_float = temperature_final/256.0;
 		len = snprintf(str,sizeof(str),"Temperature: %.3f ºC\r\n",temperature_final_float);
 		HAL_UART_Transmit(&huart2,(uint8_t *)str,len,100);
