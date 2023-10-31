@@ -72,12 +72,12 @@ uint8_t OUT_Z_ADD = 0x2D;
 char str[64];
 int len = 0;
 
-int8_t acc_x = 0;
-int8_t acc_y = 0;
-int8_t acc_z = 0;
-float acc_g_x = 0;
-float acc_g_y = 0;
-float acc_g_z = 0;
+volatile int8_t acc_x = 0;
+volatile int8_t acc_y = 0;
+volatile int8_t acc_z = 0;
+volatile float acc_g_x = 0;
+volatile float acc_g_y = 0;
+volatile float acc_g_z = 0;
 
 /* USER CODE END PV */
 

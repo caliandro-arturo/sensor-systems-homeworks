@@ -75,9 +75,9 @@ char str[64];
 int len = 0;
 
 volatile int8_t datas[6];
-float acc_g_x = 0;
-float acc_g_y = 0;
-float acc_g_z = 0;
+volatile float acc_g_x = 0;
+volatile float acc_g_y = 0;
+volatile float acc_g_z = 0;
 
 /* USER CODE END PV */
 
