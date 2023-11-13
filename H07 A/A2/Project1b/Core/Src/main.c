@@ -49,7 +49,6 @@ TIM_HandleTypeDef htim3;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-//uint8_t A[5][2] = {{31,16},{36,8},{68,4},{36,2},{31,1}};
 uint8_t H[5][2] = {{127,16},{8,8},{8,4},{8,2},{127,1}};
 uint8_t U[5][2] = {{126,16},{1,8},{1,4},{1,2},{126,1}};
 uint8_t I[5][2] = {{65,16},{65,8},{127,4},{65,2},{65,1}};
@@ -73,7 +72,6 @@ static void MX_TIM3_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-//HAL_SPI_Transmit_DMA(&hspi1,H[column_index],2);
 	if(htim->Instance == htim3.Instance){
 		order += 1;
 		if(order == 3){
