@@ -121,12 +121,15 @@ void playnote()
     __HAL_TIM_SET_COUNTER(&htim1,0);
     HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
     //Configure the TIM 2
+    /*
     htim2.Instance = TIM2;
     htim2.Init.Prescaler = 8399;
     htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
     htim2.Init.Period = 10*TEMPO*score[note_index].duration-1;
     htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
     htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+    */
+    __HAL_TIM_SET_AUTORELOAD(&htim2,10*TEMPO*score[note_index].duration-1);
     if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
       {
         Error_Handler();

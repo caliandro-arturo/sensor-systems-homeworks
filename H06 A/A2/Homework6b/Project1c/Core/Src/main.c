@@ -42,6 +42,7 @@
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
 DMA_HandleTypeDef hdma_i2c1_rx;
+DMA_HandleTypeDef hdma_i2c1_tx;
 
 TIM_HandleTypeDef htim2;
 
@@ -95,14 +96,20 @@ static void MX_TIM2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	if(HAL_I2C_Master_Transmit(&hi2c1,ACCEL_ADD,&Autoincrement_Address,1,200) != HAL_OK){
+	if(HAL_I2C_Master_Transmit_DMA(&hi2c1,ACCEL_ADD,&Autoincrement_Address,1) != HAL_OK){
 			Error_Handler();
 	}
+	/*
+	if(HAL_I2C_Master_Receive_DMA(&hi2c1,ACCEL_ADD+1,datas,6) != HAL_OK){
+			Error_Handler();
+	}
+	*/
+}
+void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c){
 	if(HAL_I2C_Master_Receive_DMA(&hi2c1,ACCEL_ADD+1,datas,6) != HAL_OK){
 			Error_Handler();
 	}
 }
-
 void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c){
 	acc_g_x = datas[0]/63.0;
 	acc_g_y = datas[2]/63.0;
@@ -351,6 +358,9 @@ static void MX_DMA_Init(void)
   /* DMA1_Stream6_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream6_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream6_IRQn);
+  /* DMA1_Stream7_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream7_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream7_IRQn);
 
 }
 
